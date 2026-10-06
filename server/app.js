@@ -1,3 +1,4 @@
+import {pages} from '../src/seo.js';
 import express from 'express';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -52,7 +53,9 @@ export function createApp({config=configuration(),sendMail,verifyCaptcha,scan=sc
   }catch(error){next(error)}
  });
  app.use('/api',(_,res)=>res.status(404).json({error:'Not found.'}));
- app.use(express.static(path.resolve('dist'),{dotfiles:'deny',index:'index.html'}));
+ app.use((req,res,next)=>{const route=Object.values(pages).find(p=>p.path!=='/'&&p.path.slice(0,-1)===req.path);if(route)return res.redirect(301,route.path);if(req.path==='/index.html')return res.redirect(301,'/');next();});
+ app.use(express.static(path.resolve('dist'),{dotfiles:'deny',index:'index.html',setHeaders:(res,file)=>{if(file.includes(path.sep+'assets'+path.sep))res.set('Cache-Control','public, max-age=31536000, immutable');}}));
+ app.use((req,res,next)=>{if(req.method!=='GET'&&req.method!=='HEAD')return next();res.status(404).set('X-Robots-Tag','noindex').sendFile(path.resolve('dist/404.html'),error=>{if(error&&!res.headersSent)res.status(404).type('text').send('Page not found.');});});
  app.use((error,req,res,next)=>{if(res.headersSent)return next(error);if(error.code==='FILE_TYPE')return res.status(400).json({error:'Use PDF, JPG or PNG attachments only.'});if(error instanceof multer.MulterError)return res.status(413).json({error:'Use at most 2 files, each no larger than 5 MB.'});console.error('Enquiry processing failed:',error.code||'INTERNAL');res.status(502).json({error:'Your enquiry could not be sent. Please try again later.'});});
  return app;
 }

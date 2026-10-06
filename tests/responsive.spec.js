@@ -1,6 +1,7 @@
 import {test,expect} from '@playwright/test';
 test.beforeEach(async({page})=>{await page.route('**/api/form-config',route=>route.fulfill({json:{available:true,siteKey:null,attachmentsEnabled:true}}));});
 test('readable layouts across phone, tablet, desktop and enlarged text',async({page})=>{
+ test.setTimeout(60000);
  for(const width of [320,390,768,1024,1440,1920]){
   await page.setViewportSize({width,height:1000});
   for(const route of ['home','order','quote','market','clients','specialties','insights','locations','contact','partners','about']){

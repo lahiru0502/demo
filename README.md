@@ -31,3 +31,24 @@ Rate limits use an in-memory store suitable for a single running instance. For m
 `npm run test:server` tests validation, recipient control, origins, CAPTCHA failure, SMTP errors, rate limiting, file limits/signatures/scanning and production configuration. `npm test` checks browser forms, failure states and responsive layouts. Browser email responses and server SMTP are mocked in automated tests; no real email is sent. `npm audit` checks published dependency advisories.
 
 Security references: [OWASP file upload guidance](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html), [Cloudflare Turnstile server validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/), [Nodemailer SMTP](https://nodemailer.com/smtp).
+
+## Australian search optimisation
+
+Builds pre-render 14 public pages/articles with their content present in HTML, unique page titles/descriptions, Australian English (`en-AU`), social previews and normal path-based links. Legacy hash URLs still open and change to their new paths. Articles have separate URLs. The server redirects missing trailing slashes and returns HTTP 404 for missing pages. Main images use responsive WebP sources and lower-page images lazy-load. External font downloads have been removed.
+
+Until the final domain is provided, builds use noindex and a robots.txt that blocks crawling. No fictional address, phone number, ratings or reviews are included in structured data. The current service scope is Sydney/NSW from the existing brief; confirm actual coverage before publication.
+
+Before the public production build, set:
+
+```env
+SITE_URL=https://your-real-domain.com.au
+SEO_INDEXING=true
+```
+
+Then run `npm run build`. This generates canonical URLs, a sitemap.xml and Organization/WebSite/WebPage/Breadcrumb/Service/Article structured data using that domain. The example above must be replaced with your actual domain. The existing HTTPS/security/email configuration is still required to run in production. Preview deployments must keep SEO_INDEXING=false. Do not use SPA catch-all hosting rewrites that turn missing pages into HTTP 200; use the included Node server or equivalent path/404 configuration.
+
+Run `npm run test:seo` after building to verify raw HTML, metadata, sitemap/schema generation, preview blocking, redirects and 404 status. The test temporarily generates a test-domain build and restores a non-indexable build afterwards; run `npm run build` again with your production environment after testing, before deployment.
+
+After domain/hosting and real business details are ready: verify ownership in Google Search Console, submit `/sitemap.xml`, inspect representative page URLs, check Core Web Vitals on the live host, and create/update an eligible Google Business Profile with consistent, genuine name/address/contact information. A business street address and phone were not supplied, so LocalBusiness address markup is intentionally pending. Search rankings and indexing are controlled by search engines and are not guaranteed.
+
+References: [Google JavaScript SEO guidance](https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics), [Google LocalBusiness guidelines](https://developers.google.com/search/docs/appearance/structured-data/local-business).

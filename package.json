@@ -5,11 +5,12 @@
   "scripts": {
     "test": "playwright test",
     "dev": "node server/dev.js",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/render.jsx --outDir .seo-build && node scripts/prerender.js",
     "preview": "vite preview --host 0.0.0.0",
     "dev:web": "vite --host 0.0.0.0",
     "start": "node server/index.js",
-    "test:server": "node --test server/*.test.js"
+    "test:server": "node --test server/*.test.js",
+    "test:seo": "node --test scripts/seo.test.js"
   },
   "keywords": [],
   "author": "",

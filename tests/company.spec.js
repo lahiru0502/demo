@@ -1,3 +1,4 @@
+import {pages} from '../src/seo.js';
 import { test, expect } from '@playwright/test';
 test.beforeEach(async({page})=>{
  await page.route('**/api/form-config',route=>route.fulfill({json:{available:true,siteKey:null,attachmentsEnabled:true}}));
@@ -16,7 +17,7 @@ test('all company pages support navigation and direct reloads', async ({ page })
     await expect(page.locator('h1')).toContainText(title);
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.locator('h1')).toContainText(title);
-    await expect(page).toHaveURL(new RegExp(`#${route}$`));
+    await expect(page).toHaveURL(new RegExp(`${pages[route].path}$`));
   }
   expect(errors).toEqual([]);
 });
@@ -34,7 +35,7 @@ test('location search, insight reading and sample forms work', async ({ page }) 
   await page.locator('.journal-card').click();
   await expect(page.getByRole('heading',{name:'Read it as a whole'})).toBeVisible();
   await page.getByRole('button',{name:'Back to all insights'}).click();
-  await expect(page.locator('.journal-card')).toHaveCount(1);
+  await expect(page.locator('.journal-card')).toHaveCount(3);
   for(const route of ['contact','partners']){
     await page.goto(`/#${route}`, { waitUntil: 'domcontentloaded' });
     await page.getByLabel('First name').fill('Alex');
