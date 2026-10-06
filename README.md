@@ -1,24 +1,11 @@
-# Acre — property valuation client demo
+# Herriton Property Valuations
 
-React + Vite responsive concept based on `Theme.docx`. Includes a landing page, market assessment page with quote form, and a three-step valuation request (contact, property, ownership), with validation and a review/confirmation state.
+React + Vite website redesigned from `Theme.docx`, `Pages preview.docx`, `OTHER.docx` and the supplied LOGO assets. Uses the supplied Herriton logos and the navy (#0A192F), gold (#B39A59), off-white (#F9F9F6) and charcoal (#2D2D2D) brand palette.
 
-## Run
+Run `npm run dev` and open http://localhost:5173. Build with `npm run build`; browser checks with `npm test`.
 
-```sh
-npm install
-npm run dev
-```
+Includes Home, Market Assessment, Our Clients, Our Specialties, Insight, Our Locations, Contact Us, Referral Partner and About Us. Separate `/#order` and `/#quote` flows include validated contact details, property type/address, purpose, additional information, supporting file selection (10 MB per file) and an Other valuation requirements dialog. Direct hash URLs and mobile navigation are supported.
 
-Open http://localhost:5173. Production build: `npm run build`. Preview: `npm run preview`.
+The language menu offers English and a contact route for language assistance; translated content was not supplied. Forms are previews: no backend, email delivery, payment, permanent storage or file uploads are connected. File selections stay local. Supporting pages contain illustrative service and editorial copy. Confirm company information and integrate submission handling before launch.
 
-## Client preview
-
-Additional pages: Our Clients, Our Specialties, Insight (filterable articles with reading views), Our Locations (search and area enquiry), Contact Us, Referral Partner, and About Us. Each page has a direct hash URL, such as `/#locations`, and is available in desktop/mobile navigation and the footer. Client descriptions, company story, editorial content and service coverage are sample content; no third-party client logos or credentials are attributed to Acre. Contact and partner forms validate inputs and show local demo confirmations.
-
-Browser checks: `npm test` (uses installed Microsoft Edge through Playwright).
-
-Use the navigation and valuation buttons to explore the pages. The form retains values while moving between steps. Required fields and email format are validated. Submissions show a demo confirmation; no backend, payment, email delivery or permanent storage is connected. Refreshing clears entered values. Acre is a sample brand and the contact email uses the reserved `.example` domain.
-
-Original references: https://romeopropertyvaluers.com.au/ and https://duotax.com.au/property-valuations/market-assessment-valuation/ and https://duotax.com.au/property-valuations/order/ . Embedded brief screenshots are in `reference/`. The design uses original sample copy, green/ivory styling, and Unsplash imagery. Images and Google Fonts require internet access; system fonts are provided as fallbacks.
-
-Before launch, replace sample branding/contact details, confirm all service copy, and integrate form processing and an appropriate privacy policy.
+Header/footer use supplied raster logos so the original typography renders consistently without requiring the logo fonts. The home/market photo is the Sydney image supplied in the brief; some supporting pages use remote Unsplash images.

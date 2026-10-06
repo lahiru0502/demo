@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Artwork" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 779.13 779.13">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: Sabon, Sabon;
+        font-size: 598.8px;
+      }
+
+      .cls-2 {
+        fill: #a2843d;
+      }
+    </style>
+  </defs>
+  <text class="cls-1" transform="translate(140.23 579.68)"><tspan x="0" y="0">H</tspan></text>
+  <rect class="cls-2" x="35.95" y="660.45" width="707.24" height="14.14" rx=".28" ry=".28"/>
+</svg>

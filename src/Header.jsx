@@ -21,7 +21,7 @@ export default function Header({ page, go, order }) {
     {dropdown === id && <div className="nav-dropdown" id={`nav-${id}`}>{links.map(([route, text]) => link(route, text))}</div>}
   </div>;
   return <header className="site-header" ref={header}>
-    <a href="#home" className="brand" onClick={() => navigate('home')}><span className="brand-mark">a<span>∕</span></span><span>acre<small>PROPERTY VALUERS</small></span></a>
+    <a href="#home" className="brand" onClick={() => navigate('home')}><img className="brand-logo" src="/brand/logo-white.png" alt="Herriton Property Valuations"/></a>
     <nav id="primary-navigation" aria-label="Main navigation" className={mobile ? 'primary-nav open' : 'primary-nav'}>
       {link('home', 'Home')}
       {group('services', 'Property valuations', [['market', 'Market Assessment'], ['specialties', 'Our Specialties']])}
@@ -30,7 +30,7 @@ export default function Header({ page, go, order }) {
       {link('locations', 'Our Locations')}
       {link('contact', 'Contact Us')}
     </nav>
-    <button className="button nav-cta" onClick={() => { setMobile(false); setDropdown(null); order(); }}>Order a valuation <ArrowUpRight size={16}/></button>
+    <button className="button nav-cta" onClick={() => { setMobile(false); setDropdown(null); order(); }}>Request a valuation <ArrowUpRight size={16}/></button>
     <button className="menu-button" aria-label="Toggle navigation" aria-controls="primary-navigation" aria-expanded={mobile} onClick={() => { setMobile(!mobile); setDropdown(null); }}>{mobile ? <X/> : <Menu/>}</button>
   </header>;
 }

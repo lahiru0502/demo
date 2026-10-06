@@ -4,6 +4,7 @@ test('all company pages support navigation and direct reloads', async ({ page })
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   for(const [route,label,title] of [['clients','Our Clients','Different journeys.'],['specialties','Our Specialties','The right expertise.'],['insights','Insight','A fresh perspective'],['locations','Our Locations','Local understanding.'],['contact','Contact Us','Good conversations.'],['partners','Referral Partner','Better connections.'],['about','About Us','Property is personal.']]){
+    if(await page.getByRole('button',{name:'Toggle navigation'}).isVisible()) await page.getByRole('button',{name:'Toggle navigation'}).click();
     if(['Our Clients','Referral Partner','About Us'].includes(label)) await page.getByRole('button',{name:'About us',exact:true}).click();
     if(label==='Our Specialties') await page.getByRole('button',{name:'Property valuations',exact:true}).click();
     await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:label,exact:true}).click();
