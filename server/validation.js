@@ -1,0 +1,11 @@
+﻿import { z } from 'zod';
+const text = (max=200) => z.string().trim().min(1).max(max).refine(v=>!/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(v));
+const optional = (max=200) => text(max).or(z.literal('')).optional();
+const email = z.string().trim().max(254).email().refine(v=>!/[\r\n]/.test(v));
+const phone = z.string().regex(/^\+?[0-9][0-9 ]{7,18}$/);
+const common = { firstName:text(80), email, consent:z.literal(true), website:z.literal('').optional() };
+const valuation = z.object({...common, surname:text(80), phone, valuation:z.enum(['Market Assessment','Capital Gains','SMSF Valuation','Retrospective Capital Gains','Retrospective','Stamp Duty','Rent Review','Other']), propertyType:z.enum(['House','Apartment','Townhouse','Commercial','Retail','Industrial','Vacant land','Rural','Other']), purpose:z.enum(['Buying or selling','Tax reporting','Estate planning','Family settlement','Portfolio review','Rental assessment','Other']), address:text(500), notes:optional(4000),otherPurpose:optional(1000)}).strict().refine(d=>d.valuation!=='Other'||!!d.otherPurpose,{message:'Please specify other valuation requirements.'});
+const enquiry=z.object({...common,lastName:text(80),phone:phone.or(z.literal('')).optional(),area:optional(500),message:text(4000)}).strict();
+const partner=z.object({...common,lastName:text(80),phone:phone.or(z.literal('')).optional(),business:text(200),profession:z.enum(['Accountant or financial adviser','Solicitor or conveyancer','Real estate professional','Mortgage broker','Other']),message:text(4000)}).strict();
+export const schemas={valuation,quote:valuation,contact:enquiry,location:enquiry,partner};
+export const subjects={valuation:'Property valuation request',quote:'Free quote request',contact:'Contact enquiry',location:'Service area enquiry',partner:'Referral partner enquiry'};

@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+test.beforeEach(async({page})=>{
+ await page.route('**/api/form-config',route=>route.fulfill({json:{available:true,siteKey:null,attachmentsEnabled:true}}));
+ await page.route('**/api/enquiries',route=>route.fulfill({json:{ok:true}}));
+});
+
 
 test('all company pages support navigation and direct reloads', async ({ page }) => {
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -39,7 +44,7 @@ test('location search, insight reading and sample forms work', async ({ page }) 
     await page.locator('textarea').fill('Please discuss the property brief.');
     await page.getByRole('checkbox').check();
     await page.locator('form button[type="submit"], form button.full').click();
-    await expect(page.getByRole('status')).toContainText('No information has been sent or saved.');
+    await expect(page.getByRole('status')).toContainText('Your enquiry has been sent to our team.');
   }
 });
 test('mobile menu reaches every new page without horizontal overflow', async ({ page }) => {
