@@ -20,6 +20,14 @@ Put the server behind HTTPS, keep its backend port private, and configure HOST/P
 
 ## Attachments and safeguards
 
+### Vercel form backend
+
+`vercel.json` routes `/api/*` to `api/index.js`, which runs the same protected Express enquiry backend alongside the Vite static build. Deploy the entire `demo` project, not only `dist`. Missing production mail/CAPTCHA settings return HTTP 503; the UI keeps sending disabled until the backend is configured.
+
+In Vercel's private Production environment variables, set `APP_ORIGINS=https://herriton.com.au`, `MAIL_TO=lahiru.xtream@gmail.com`, `MAIL_FROM`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY`. Authorise the sender with the mail provider and register herriton.com.au in the Turnstile widget. Redeploy after changing variables. Verify `/api/form-config` returns JSON with `available: true`, then submit a real contact enquiry and check receipt. Never put these secrets into client files or chat.
+
+For Vercel's multiple function instances, configure shared/edge rate limiting before public launch; the included in-memory limits apply per instance. Keep attachments disabled unless a private scanner and hosting upload limits have been configured.
+
 Attachments are disabled until CLAMAV_HOST points to a private, maintained ClamAV scanning service (port 3310 by default). Only PDF/JPG/PNG, maximum 2 files at 5 MB each, are accepted. The server checks filename extensions and file signatures, then requires a clean antivirus result before forwarding. DOC/DOCX attachments are intentionally unsupported. Uploaded buffers stay in process memory and are not saved, served, or executed. Keep ClamAV signatures updated and never expose its TCP port publicly. Signature and malware checks reduce risk; they cannot guarantee every document is harmless.
 
 The backend enforces field lengths, enums, valid email/phone, consent, a honeypot, exact origin plus custom-header checks, request/file limits, per-IP rate limits, TLS SMTP, fixed sender/recipient, plain-text email and generic errors. SMTP credentials are never exposed via the API. Security headers include CSP/HSTS; responses do not cache enquiry data. Request data and credentials are not logged.
