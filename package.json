@@ -6,6 +6,7 @@
     "test": "playwright test",
     "dev": "node server/dev.js",
     "build": "vite build && vite build --ssr src/render.jsx --outDir .seo-build && node scripts/prerender.js",
+    "build:production": "vite build && vite build --ssr src/render.jsx --outDir .seo-build && node scripts/prerender.js --production",
     "preview": "vite preview --host 0.0.0.0",
     "dev:web": "vite --host 0.0.0.0",
     "start": "node server/index.js",

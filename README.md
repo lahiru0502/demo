@@ -36,16 +36,16 @@ Security references: [OWASP file upload guidance](https://cheatsheetseries.owasp
 
 Builds pre-render 14 public pages/articles with their content present in HTML, unique page titles/descriptions, Australian English (`en-AU`), social previews and normal path-based links. Legacy hash URLs still open and change to their new paths. Articles have separate URLs. The server redirects missing trailing slashes and returns HTTP 404 for missing pages. Main images use responsive WebP sources and lower-page images lazy-load. External font downloads have been removed.
 
-Until the final domain is provided, builds use noindex and a robots.txt that blocks crawling. No fictional address, phone number, ratings or reviews are included in structured data. The current service scope is Sydney/NSW from the existing brief; confirm actual coverage before publication.
+The confirmed public domain is https://herriton.com.au. Local and preview builds use noindex and a robots.txt that blocks crawling. Vercel production builds automatically use this domain and enable indexing unless SEO_INDEXING is explicitly false. No fictional address, phone number, ratings or reviews are included in structured data. The current service scope is Sydney/NSW from the existing brief; confirm actual coverage before publication.
 
 Before the public production build, set:
 
 ```env
-SITE_URL=https://your-real-domain.com.au
+SITE_URL=https://herriton.com.au
 SEO_INDEXING=true
 ```
 
-Then run `npm run build`. This generates canonical URLs, a sitemap.xml and Organization/WebSite/WebPage/Breadcrumb/Service/Article structured data using that domain. The example above must be replaced with your actual domain. The existing HTTPS/security/email configuration is still required to run in production. Preview deployments must keep SEO_INDEXING=false. Do not use SPA catch-all hosting rewrites that turn missing pages into HTTP 200; use the included Node server or equivalent path/404 configuration.
+Then run `npm run build:production`. This generates canonical URLs, a sitemap.xml and Organization/WebSite/WebPage/Breadcrumb/Service/Article structured data using that domain. For Vercel, set these environment variables in the Production environment only, and redeploy; remove any production SEO_INDEXING=false setting. Preview deployments must keep SEO_INDEXING=false. The existing HTTPS/security/email configuration is still required to run in production. Do not use SPA catch-all hosting rewrites that turn missing pages into HTTP 200; use the included Node server or equivalent path/404 configuration.
 
 Run `npm run test:seo` after building to verify raw HTML, metadata, sitemap/schema generation, preview blocking, redirects and 404 status. The test temporarily generates a test-domain build and restores a non-indexable build afterwards; run `npm run build` again with your production environment after testing, before deployment.
 

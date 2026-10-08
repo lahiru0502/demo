@@ -3,9 +3,12 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pages,metadata} from '../src/seo.js';
 import {render} from '../.seo-build/render.js';
-const value=process.env.SITE_URL||'';let siteUrl='';
+// Vercel previews stay blocked; only a production deployment or explicit
+// production build uses the confirmed public domain by default.
+const production=process.argv.includes('--production')||process.env.VERCEL_ENV==='production';
+const value=process.env.SITE_URL||(production?'https://herriton.com.au':'');let siteUrl='';
 if(value){const parsed=new URL(value);if(parsed.protocol!=='https:'||parsed.username||parsed.password||parsed.pathname!=='/'||parsed.search||parsed.hash)throw Error('SITE_URL must be your HTTPS origin only.');siteUrl=parsed.origin;}
-const indexable=process.env.SEO_INDEXING==='true'&&!!siteUrl;
+const indexable=(process.env.SEO_INDEXING??String(production))==='true'&&!!siteUrl;
 const templatePath='dist/.seo-template';let raw;try{raw=await fs.readFile(templatePath,'utf8')}catch{raw=await fs.readFile('dist/index.html','utf8');await fs.writeFile(templatePath,raw)}const template=raw.replace(/<meta name="robots"[^>]*>/,'');
 const escape=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 for(const id of [...Object.keys(pages),'not-found']){
