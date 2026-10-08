@@ -7,6 +7,7 @@ import nodemailer from 'nodemailer';
 import {fileTypeFromBuffer} from 'file-type';
 import path from 'node:path';
 import {schemas,subjects} from './validation.js';
+import {enquiryEmail} from './email-template.js';
 import {scanAttachment} from './scan.js';
 const email=/^[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+$/;
 export function configuration(env=process.env){
@@ -46,8 +47,8 @@ export function createApp({config=configuration(),sendMail,verifyCaptcha,scan=sc
     try{await scan(file.buffer,{host:env.CLAMAV_HOST,port:Number(env.CLAMAV_PORT||3310)})}catch{return res.status(422).json({error:'An attachment could not pass security scanning. Remove it and try again.'})}
     attachments.push({filename:file.originalname.replace(/[^a-zA-Z0-9._ -]/g,'_').slice(-100),content:file.buffer,contentType:detected.mime,contentDisposition:'attachment'});
    }
-   const d=result.data;const text=Object.entries(d).filter(([k])=>!['consent','website'].includes(k)).map(([key,value])=>`${key}: ${value||'Not provided'}`).join('\n\n');
-   const info=await sendMail({from:{name:'Herriton Website',address:env.MAIL_FROM},to:env.MAIL_TO,replyTo:d.email,subject:`Herriton — ${subjects[kind]}`,text:`${subjects[kind]}\n\n${text}\n\nConsent: provided`,attachments,disableFileAccess:true,disableUrlAccess:true});
+   const d=result.data;const content=enquiryEmail(kind,d,attachments.length);
+   const info=await sendMail({from:{name:'Herriton Website',address:env.MAIL_FROM},to:env.MAIL_TO,replyTo:d.email,subject:`Herriton — ${subjects[kind]}`,...content,attachments,disableFileAccess:true,disableUrlAccess:true});
    if(!info?.accepted?.some(a=>String(a).toLowerCase()===env.MAIL_TO.toLowerCase()))throw Error('Recipient not accepted');
    res.json({ok:true});
   }catch(error){next(error)}
