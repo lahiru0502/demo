@@ -2,7 +2,7 @@ export const pages={
  'insight-prepare':{path:'/insights/preparing-for-a-property-valuation/',title:'Preparing for a Property Valuation | Herriton',description:'A practical checklist for a Sydney or NSW property valuation: define your purpose, gather property details and prepare useful questions for your valuer.'},
  'insight-report':{path:'/insights/understanding-a-valuation-report/',title:'Understanding a Property Valuation Report | Herriton',description:'Understand the purpose, property information, market evidence and assumptions in a property valuation report. Read Herriton\'s practical guide.'},
  'insight-brief':{path:'/insights/commercial-property-valuation-brief/',title:'Preparing a Commercial Property Valuation Brief | Herriton',description:'Prepare a clearer commercial property valuation brief with property use, tenancy details, available documents and your intended report purpose.'},
- home:{path:'/',title:'Property Valuations Sydney & NSW | Herriton',description:'Explore residential and commercial property valuations in Sydney and New South Wales. Discuss your property, report purpose and assessment requirements with Herriton.'},
+ home:{path:'/',title:'Herriton Property Valuations | Sydney & NSW',description:'Herriton Property Valuations provides residential and commercial property valuations in Sydney and NSW. Discuss your property and report requirements with our team.'},
  market:{path:'/property-valuations/market-assessment/',title:'Market Assessment Valuations Sydney | Herriton',description:'Understand your Sydney property with a market assessment valuation. Explore the evidence, report scope and information needed to request a tailored quote.'},
  specialties:{path:'/property-valuations/',title:'Residential & Commercial Property Valuations | Herriton',description:'Explore residential, commercial, retail, industrial and land valuation services in Sydney and NSW. Find a starting point for your property assessment.'},
  clients:{path:'/our-clients/',title:'Property Valuations for Owners & Advisers | Herriton',description:'Property valuation enquiries for homeowners, buyers, investors, businesses, legal professionals and advisers across Sydney and New South Wales.'},
@@ -20,8 +20,8 @@ export function metadata(id,siteUrl=''){
  const page=pages[id]||{path:'/404.html',title:'Page Not Found | Herriton',description:'This page could not be found. Explore Herriton property valuation services or contact the team.'};
  const url=siteUrl&&pages[id]?siteUrl+page.path:'';
  const schema=siteUrl&&pages[id]?{'@context':'https://schema.org','@graph':[
- {'@type':'Organization','@id':siteUrl+'/#organisation',name:'Herriton Property Valuations',url:siteUrl+'/',logo:siteUrl+'/brand/logo.png'},
- {'@type':'WebSite','@id':siteUrl+'/#website',url:siteUrl+'/',name:'Herriton Property Valuations',inLanguage:'en-AU',publisher:{'@id':siteUrl+'/#organisation'}},
+ {'@type':'Organization','@id':siteUrl+'/#organisation',name:'Herriton Property Valuations',alternateName:'Herriton',url:siteUrl+'/',logo:siteUrl+'/brand/logo.png'},
+ {'@type':'WebSite','@id':siteUrl+'/#website',url:siteUrl+'/',name:'Herriton Property Valuations',alternateName:'Herriton',inLanguage:'en-AU',publisher:{'@id':siteUrl+'/#organisation'}},
  {'@type':'WebPage','@id':url+'#webpage',url,name:page.title,description:page.description,inLanguage:'en-AU',isPartOf:{'@id':siteUrl+'/#website'}},
  ...(id!=='home'?[{'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:siteUrl+'/'},{'@type':'ListItem',position:2,name:page.title.split(' | ')[0],item:url}]}]:[]),
  ...(id.startsWith('insight-')?[{'@type':'Article',headline:page.title.split(' | ')[0],description:page.description,inLanguage:'en-AU',mainEntityOfPage:{'@id':url+'#webpage'},publisher:{'@id':siteUrl+'/#organisation'}}]:[]),
